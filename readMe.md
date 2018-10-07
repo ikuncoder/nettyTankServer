@@ -32,7 +32,7 @@
 
 ## 协议
 ### 客户端和服务端之间用的是google的protobuf协议通讯
-### 协议格式为：
+### 协议内容(非格式)为：
 1)服务端——>客户端：sign+playerId+player.x+player.y+direction+live+health+score+strength+respawnCounter<br>
 2)客户端——>服务端：groupNum+sign+playerId+order<br>
 
