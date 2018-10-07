@@ -36,7 +36,7 @@
 1)服务端——>客户端：sign+playerId+player.x+player.y+direction+live+health+score+strength+respawnCounter<br>
 2)客户端——>服务端：groupNum+sign+playerId+order<br>
 
-##引包说明
+## 引包说明
 需要引入的包是netty-all-5.0.0.Alpha1.jar和protobuf-java-2.5.0.jar
 
 ## 其他
