@@ -1,0 +1,8 @@
+package codec;
+option java_package = "com.codec.protobuf";
+option java_outer_classname = "OutTestMessage";
+message TestMessage{
+    required string name =1;
+    required int32 age=2;
+    required int32 high=3;
+}

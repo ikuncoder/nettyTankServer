@@ -1,9 +1,10 @@
 package protobuf;
 
 import io.netty.channel.ChannelHandler.Sharable;
-import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
-import tank.GameCenter;
+import io.netty.channel.ChannelInboundHandlerAdapter;
+import protobuf.common.byteArrayTools.Codecable;
+import protobuf.message.messageBody.OutTestMessage;
 
 /**
  * @author lishikun
@@ -11,7 +12,7 @@ import tank.GameCenter;
  * @date 2018年9月05日
  */
 @Sharable
-public class SubReqServerHandler extends ChannelHandlerAdapter {
+public class SubReqServerHandler extends ChannelInboundHandlerAdapter {
     private SubReqServerHandler(){}
     private static SubReqServerHandler subReqServerHandler=null;
     public static SubReqServerHandler getInstance(){
@@ -22,12 +23,17 @@ public class SubReqServerHandler extends ChannelHandlerAdapter {
     }
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
-        GameCenter.getInstance().connetEnter(ctx);
+        //GameCenter.getInstance().connetEnter(ctx);
+        OutTestMessage.TestMessage testMessage=new OutTestMessage.TestMessage();
+        //ctx.write(codecable);
     }
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
-        GameCenter.getInstance().receiveMsgHandler(ctx, msg);
+        Codecable codecable=(Codecable)msg;
+        System.out.println("server:"+codecable);
+        ctx.write(codecable);
+        //GameCenter.getInstance().receiveMsgHandler(ctx, msg);
     }
 
     private ServerProtocolProto.ServerProtocol resp(String msg) {

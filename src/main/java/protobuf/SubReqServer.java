@@ -8,12 +8,11 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.codec.protobuf.ProtobufDecoder;
-import io.netty.handler.codec.protobuf.ProtobufEncoder;
-import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder;
-import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
+import protobuf.coder.ProtocolDecoder;
+import protobuf.coder.ProtocolEncoder;
+import protobuf.message.manager.ProtocolAnnotationManager;
 
 /**
  * @author lishikun
@@ -35,11 +34,14 @@ public class SubReqServer {
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         public void initChannel(SocketChannel ch) {
-                            ch.pipeline().addLast(new ProtobufVarint32FrameDecoder());
+                           /* ch.pipeline().addLast(new ProtobufVarint32FrameDecoder());
                             ch.pipeline().addLast(new ProtobufDecoder(ClientProtocolProto.ClientProtocol.getDefaultInstance()));
                             ch.pipeline().addLast(new ProtobufVarint32LengthFieldPrepender());
                             ch.pipeline().addLast(new ProtobufEncoder());
-                            ch.pipeline().addLast(SubReqServerHandler.getInstance());
+                            ch.pipeline().addLast(SubReqServerHandler.getInstance());*/
+                           ch.pipeline().addLast("decoder",new ProtocolDecoder());
+                           ch.pipeline().addLast("encoder",new ProtocolEncoder());
+                           ch.pipeline().addLast(SubReqServerHandler.getInstance());
                         }
                     });
             // 绑定端口，同步等待成功
@@ -54,6 +56,7 @@ public class SubReqServer {
     }
 
     public static void main(String[] args) throws Exception {
+        ProtocolAnnotationManager.getInstance().init();
         int port = 8099;
         new SubReqServer().bind(port);
     }

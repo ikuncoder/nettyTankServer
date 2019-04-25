@@ -8,9 +8,18 @@ version '1.0-SNAPSHOT'
 sourceCompatibility = 1.8
 
 repositories {
+    maven{
+        url'http://maven.aliyun.com/nexus/content/groups/public/'
+    }
     mavenCentral()
 }
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile ('io.netty:netty-all:4.1.10.Final')//'io.netty:netty-all:5.0.0.Alpha1'
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.google.protobuf:protobuf-java:2.5.0'
+    compileOnly 'org.projectlombok:lombok:1.16.20'
+    compile 'org.reflections:reflections:0.9.11'
 }
+
