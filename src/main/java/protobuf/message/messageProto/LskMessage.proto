@@ -1,0 +1,8 @@
+package protobuf.message.messageProto;
+option java_package = "protobuf.message.messageClass";
+
+message LskTestMessage{
+    required string name=1;
+    required int32 age=2;
+    required int32 high=3;
+}

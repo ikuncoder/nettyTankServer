@@ -1,0 +1,15 @@
+package protobuf.message.messageProto;
+option java_package = "protobuf.message.messageClass";
+message BaseData {
+    required Header header = 1;
+    extensions 100 to 99999;
+}
+
+enum Header {
+    //装备升级
+    Msg1001 = 1001;
+    //装备穿戴
+    Msg1002 = 1002;
+    //添加好友
+    Msg1003 = 1003;
+}

@@ -48,9 +48,9 @@ public class TankWorld extends GameWorld implements Runnable{
     private ArrayList<Ship> powerups;
     private ArrayList<PlayerShip> aiplayers;
     public SendMsg sendMsg;
-    public int mapNum;//µØÍ¼ĞòºÅ
-    private int groupNum;//·¿¼äºÅ
-    private boolean closeMe;//ÓÎÏ·½áÊøµÄ±êÖ¾
+    public int mapNum;//åœ°å›¾åºå·
+    private int groupNum;//æˆ¿é—´å·
+    private boolean closeMe;//æ¸¸æˆç»“æŸçš„æ ‡å¿—
     private ArrayList<ChannelHandlerContext> channelHandlerContextsArrayList;
     private TankWorld tankWorld;
 
@@ -83,10 +83,10 @@ public class TankWorld extends GameWorld implements Runnable{
         tankWorld.setDimensions(800, 600);
         sendMsg.sendMessage(tankWorld,"randomMap", "0", mapNum, 0, 0, 0, 0, 0, 0, 0);
         sendMsg.sendMessage(tankWorld,"groupNum","0",tankWorld.groupNum,0,0,0,0,0,0,0);
-        //·ÖÅÉplayerID,µÚ¶ş¸ö×Ö·û´ú±íchannelHandlerContextArrayListÁĞ±íµÄÏÂ±ê£¬µÚÈı¸ö×Ö·û´ú±íplayerId
+        //åˆ†æ´¾playerID,ç¬¬äºŒä¸ªå­—ç¬¦ä»£è¡¨channelHandlerContextArrayListåˆ—è¡¨çš„ä¸‹æ ‡ï¼Œç¬¬ä¸‰ä¸ªå­—ç¬¦ä»£è¡¨playerId
         sendMsg.sendMessage(tankWorld,"playerId", "0", 0, 0, 0, 0, 0, 0, 0, 0);
         sendMsg.sendMessage(tankWorld,"playerId", "1", 1, 0, 0, 0, 0, 0, 0, 0);
-        //µÈ´ı1s,ÈÃ¿Í»§¶ËÆô¶¯
+        //ç­‰å¾…1s,è®©å®¢æˆ·ç«¯å¯åŠ¨
         try{
             Thread.sleep(2000);
         }catch (Exception e){
@@ -97,7 +97,7 @@ public class TankWorld extends GameWorld implements Runnable{
         f.setResizable(false);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         GameWorld.sound.playmp3("Resources/AlliedForces.mp3");
-        //aiÏß³Ì
+        //aiçº¿ç¨‹
         new Thread(new AiTankHandler(tankWorld)).start();
         tankWorld.start();
         while(true){
@@ -109,9 +109,9 @@ public class TankWorld extends GameWorld implements Runnable{
             if(closeMe){
                //f.setVisible(false);
                f.dispose();
-               //·şÎñÆ÷×÷±ê¼Ç
+               //æœåŠ¡å™¨ä½œæ ‡è®°
                 GameCenter.getInstance().flag=1;
-                //°ÑmapNum,channelHandlerContextsArrayList´«¸øGameLevel
+                //æŠŠmapNum,channelHandlerContextsArrayListä¼ ç»™GameLevel
                 GameLevelHandler.getInstance().gameLevelHandler(mapNum,channelHandlerContextsArrayList);
                 GameCenter.getInstance().tankWorldArrayList.remove(this);
                 //new Thread(GameLevelHandler.getInstance(mapNum,channelHandlerContextsArrayList)).start();
@@ -374,7 +374,7 @@ public class TankWorld extends GameWorld implements Runnable{
                     }
                 }
                 closeMe=true;
-                break;//Í£Ö¹Õâ¸öÏß³Ì
+                break;//åœæ­¢è¿™ä¸ªçº¿ç¨‹
             }
             try {
                 thread.sleep(23); // pause a little to slow things down
