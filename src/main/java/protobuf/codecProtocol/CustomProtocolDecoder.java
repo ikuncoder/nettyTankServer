@@ -55,7 +55,7 @@ public class CustomProtocolDecoder extends ByteToMessageDecoder {
         if(messageId== MessageEnum.TestMessage.getMessageId()){
             return OutTestMessage.TestMessage.getDefaultInstance().getParserForType().parseFrom(array,offset,length);
         }else if(messageId==MessageEnum.LoginMessage.getMessageId()){
-            return OutReqLoginMessage.ReqLoginMessage.getDefaultInstance().getParserForType().parseFrom(array,offset,length);
+            return OutReqLoginMessage.LoginMessage.getDefaultInstance().getParserForType().parseFrom(array,offset,length);
         }
         return null;
     }

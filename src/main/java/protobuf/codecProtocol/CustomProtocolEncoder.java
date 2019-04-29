@@ -28,7 +28,7 @@ public class CustomProtocolEncoder extends MessageToByteEncoder<MessageLite> {
         int messageId=0;
         if(msg instanceof OutTestMessage.TestMessage){
             messageId=MessageEnum.TestMessage.getMessageId();
-        }else if(msg instanceof OutReqLoginMessage.ReqLoginMessage){
+        }else if(msg instanceof OutReqLoginMessage.LoginMessage){
             messageId=MessageEnum.LoginMessage.getMessageId();
         }
         return messageId;

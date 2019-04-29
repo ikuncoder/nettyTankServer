@@ -33,15 +33,15 @@ public class SubReqServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
         //GameCenter.getInstance().connetEnter(ctx);
-        ctx.writeAndFlush(respTestMessage());
+        //ctx.writeAndFlush(respTestMessage());
     }
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
-        if(msg instanceof OutReqLoginMessage.ReqLoginMessage){
+        logger.error("received message"+msg);
+        if(msg instanceof OutReqLoginMessage.LoginMessage){
             try {
                 loginMessageHandler(ctx, msg);
-                System.out.println("收到登录消息 msg:"+msg);
             } catch (Exception e) {
                 e.printStackTrace();
             }

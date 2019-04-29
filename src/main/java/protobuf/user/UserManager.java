@@ -37,10 +37,10 @@ public class UserManager {
      * @param msg
      */
     public void insertUserContext(ChannelHandlerContext ctx, Object msg){
-        if(!(msg instanceof OutReqLoginMessage.ReqLoginMessage)){
+        if(!(msg instanceof OutReqLoginMessage.LoginMessage)){
             return;
         }
-        long userId=((OutReqLoginMessage.ReqLoginMessage) msg).getUserId();
+        long userId=((OutReqLoginMessage.LoginMessage) msg).getUserId();
         userContext.put(userId,ctx);
         insertUserMap(userId);
     }

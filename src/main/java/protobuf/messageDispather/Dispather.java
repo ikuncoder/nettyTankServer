@@ -93,6 +93,6 @@ public class Dispather {
 
     public static void main(String[] args) {
         Dispather.getInstance().init();
-        logger.error("试官汉");
+        logger.error("hh");
     }
 }
