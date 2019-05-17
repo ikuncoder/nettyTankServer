@@ -1,4 +1,4 @@
-package protobuf.messageManager;
+package protobuf.messageManager.handler;
 
 import protobuf.message.messageClass.OutTestMessage;
 import protobuf.messageManager.annotation.MessageHandler;

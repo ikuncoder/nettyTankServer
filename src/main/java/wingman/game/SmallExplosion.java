@@ -1,7 +1,11 @@
 package wingman.game;
 
 import protobuf.SendMsg;
+import protobuf.message.MessagePusher;
+import protobuf.message.messageClass.OutRemoveSmallExplosionMessage;
+import protobuf.message.messageClass.OutSmallAnimationMessage;
 import tank.TankWorld;
+import tank.TankWorldHelper;
 import wingman.GameWorld;
 import wingman.WingmanWorld;
 
@@ -37,11 +41,15 @@ public class SmallExplosion extends BackgroundObject {
             frame++;
             if (frame < 6) {
             	this.img = animation[frame];
-                sendMsg.sendMessage(tankWorld,"smallAnimation", 0+"" ,this.getLocationPoint().x ,this.getLocationPoint().y ,frame,0,0,0,0,0);
+                /*sendMsg.sendMessage(tankWorld,"smallAnimation", 0+"" ,this.getLocationPoint().x ,this.getLocationPoint().y ,frame,0,0,0,0,0);*/
+                OutSmallAnimationMessage.SmallAnimationMessage smallAnimationMessage = TankWorldHelper.getSmallAnimationMessage(this.getLocationPoint().x, this.getLocationPoint().y, frame);
+                MessagePusher.getInstance().pushMessageForUsers(tankWorld.getUsers(),smallAnimationMessage);
             }
             else {
             	this.show = false;
-            	sendMsg.sendMessage(tankWorld,"RemoveSmallExplosion",0+"",this.getLocationPoint().x ,this.getLocationPoint().y,0,0,0,0,0,0);
+            	/*sendMsg.sendMessage(tankWorld,"RemoveSmallExplosion",0+"",this.getLocationPoint().x ,this.getLocationPoint().y,0,0,0,0,0,0);*/
+                OutRemoveSmallExplosionMessage.RemoveSmallExplosionMessage removeSmallExplosionMessage = TankWorldHelper.getRemoveSmallExplosionMessage(this.getLocationPoint().x, this.getLocationPoint().y);
+                MessagePusher.getInstance().pushMessageForUsers(tankWorld.getUsers(),removeSmallExplosionMessage);
             }
                 
         }

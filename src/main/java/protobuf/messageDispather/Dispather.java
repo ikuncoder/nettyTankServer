@@ -44,7 +44,7 @@ public class Dispather {
         User user= UserManager.getInstance().getUserByChannelHandlerContext(ctx);
         if(user==null){
            logger.error("user不在缓存里面");
-            return;
+           return;
         }
         MessageEvent event=new MessageEvent(user.getUserId(),user.getGroupNum(),context,msg);
         EventThread thread=getThread(user.getGroupNum());

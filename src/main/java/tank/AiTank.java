@@ -1,18 +1,19 @@
 package tank;
 
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.image.ImageObserver;
-import java.util.ArrayList;
 import com.kesar.a.KeSarStart;
-
 import protobuf.SendMsg;
+import protobuf.message.MessagePusher;
+import protobuf.message.messageClass.OutAiTankMessage;
+import protobuf.message.messageClass.OutBigExplosionMessage;
+import protobuf.message.messageClass.OutTankDisappearMessage;
 import wingman.GameWorld;
 import wingman.game.BigExplosion;
 import wingman.game.PlayerShip;
 import wingman.modifiers.motions.InputController;
+
+import java.awt.*;
+import java.awt.image.ImageObserver;
+import java.util.ArrayList;
 
 public class AiTank extends PlayerShip {
 	int direction;
@@ -225,28 +226,36 @@ public class AiTank extends PlayerShip {
 						(direction / 6) * this.getSizeX(), 0, // source top left
 						((direction / 6) * this.getSizeX()) + this.getSizeX(), this.getSizeY(), // source lower right
 						obs);
-				sendMsg.sendMessage((TankWorld)obs,"AirespawnCounter", this.getName(), location.x , location.y
+				/*sendMsg.sendMessage((TankWorld)obs,"AirespawnCounter", this.getName(), location.x , location.y
 						,this.direction ,this.getLives(), this.getHealth(), this.getScore(),this.getHealth() ,
-						this.respawnCounter);
+						this.respawnCounter);*/
+				OutAiTankMessage.AiTankMessage aiTankMessage = TankWorldHelper.getAiTankMessage(this);
+				MessagePusher.getInstance().pushMessageForUsers(((TankWorld)obs).getUsers(),aiTankMessage);
 			}
 			respawnCounter -= 1;
 		} else {
 			respawnCounter -= 1;
-			sendMsg.sendMessage((TankWorld)obs,"AirespawnCounter", this.getName() , location.x, location.y
+			/*sendMsg.sendMessage((TankWorld)obs,"AirespawnCounter", this.getName() , location.x, location.y
 					, this.direction ,this.getLives(), this.getHealth(),this.getScore(),this.getHealth(),
-					this.respawnCounter);
+					this.respawnCounter);*/
+			OutAiTankMessage.AiTankMessage aiTankMessage = TankWorldHelper.getAiTankMessage(this);
+			MessagePusher.getInstance().pushMessageForUsers(((TankWorld)obs).getUsers(),aiTankMessage);
 		}
 
 	}
 
 	public void die(TankWorld tankWorld){
 		this.show = false;
-		sendMsg.sendMessage(tankWorld,"tankDisappear" , this.getName(), location.x ,location.y,
-				0,0,0,0,0,0);
+		/*sendMsg.sendMessage(tankWorld,"tankDisappear" , this.getName(), location.x ,location.y,
+				0,0,0,0,0,0);*/
+		OutTankDisappearMessage.TankDisappearMessage tankDisappearMessage = TankWorldHelper.getTankDisappearMessage(this.getName(), location.x, location.y);
+		MessagePusher.getInstance().pushMessageForUsers(tankWorld.getUsers(),tankDisappearMessage);
 		GameWorld.setSpeed(new Point(0, 0));
 		BigExplosion explosion = new BigExplosion(new Point(location.x, location.y));
 		tankWorld.addBackground(explosion);
-		sendMsg.sendMessage(tankWorld,"BigExplosion",0+"", location.x , location.y , 0,0,0,0,0,0);
+		/*sendMsg.sendMessage(tankWorld,"BigExplosion",0+"", location.x , location.y , 0,0,0,0,0,0);*/
+		OutBigExplosionMessage.BigExplosionMessage bIgExplosionMessage = TankWorldHelper.getBIgExplosionMessage(location.x, location.y);
+		MessagePusher.getInstance().pushMessageForUsers(tankWorld.getUsers(),bIgExplosionMessage);
 		lives -= 1;
 		if (lives >= 0) {
 			tankWorld.removeClockObserver(this.motion);

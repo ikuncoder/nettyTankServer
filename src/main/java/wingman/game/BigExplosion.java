@@ -1,7 +1,11 @@
 package wingman.game;
 
 import protobuf.SendMsg;
+import protobuf.message.MessagePusher;
+import protobuf.message.messageClass.OutBigAnimationMessage;
+import protobuf.message.messageClass.OutRemoveBigExplosionMessage;
 import tank.TankWorld;
+import tank.TankWorldHelper;
 import wingman.GameWorld;
 
 import java.awt.*;
@@ -37,11 +41,15 @@ public class BigExplosion extends BackgroundObject {
             frame++;
             if (frame < 7) {
             	this.img = animation[frame];
-                sendMsg.sendMessage(tankWorld,"bigAnimation", 0+"" ,this.getLocationPoint().x ,this.getLocationPoint().y ,frame,0,0,0,0,0);
+                /*sendMsg.sendMessage(tankWorld,"bigAnimation", 0+"" ,this.getLocationPoint().x ,this.getLocationPoint().y ,frame,0,0,0,0,0);*/
+                OutBigAnimationMessage.BigAnimationMessage bigAnimationMessage = TankWorldHelper.getBigAnimationMessage(this.getLocationPoint().x, this.getLocationPoint().y, frame);
+                MessagePusher.getInstance().pushMessageForUsers(tankWorld.getUsers(),bigAnimationMessage);
             }
             else {
             	this.show = false;
-            	sendMsg.sendMessage(tankWorld,"RemoveBigExplosion",0+"",this.getLocationPoint().x,this.getLocationPoint().y ,0,0,0,0,0,0);
+            	/*sendMsg.sendMessage(tankWorld,"RemoveBigExplosion",0+"",this.getLocationPoint().x,this.getLocationPoint().y ,0,0,0,0,0,0);*/
+                OutRemoveBigExplosionMessage.RemoveBigExplosionMessage removeBigExplosionMessage = TankWorldHelper.getRemoveBigExplosionMessage(this.getLocationPoint().x, this.getLocationPoint().y);
+                MessagePusher.getInstance().pushMessageForUsers(tankWorld.getUsers(),removeBigExplosionMessage);
             }
                 
             

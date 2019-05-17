@@ -6,8 +6,10 @@ package protobuf.user;
  * 2019/4/28 14:58
  */
 public class User {
+    /**用户id*/
     private long userId;
-    private int groupNum;
+    /**房间号*/
+    private volatile int groupNum;
 
     public User(long userId,Integer...group){
         this.userId=userId;

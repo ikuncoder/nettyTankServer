@@ -1,0 +1,9 @@
+package protobuf.message.messageProto;
+option java_package = "protobuf.message.messageClass";
+option java_outer_classname = "OutBigAnimationMessage";
+
+message BigAnimationMessage{
+    required int32 locationX=1;
+    required int32 locationY=2;
+    required int32 frame=3;
+}

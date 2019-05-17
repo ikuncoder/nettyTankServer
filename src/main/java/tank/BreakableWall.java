@@ -1,6 +1,9 @@
 package tank;
 
 import protobuf.SendMsg;
+import protobuf.message.MessagePusher;
+import protobuf.message.messageClass.OutBreakableWallMessage;
+import protobuf.message.messageClass.OutRemoveBreakableWallMessage;
 import wingman.game.BackgroundObject;
 import wingman.game.GameObject;
 
@@ -21,8 +24,10 @@ public class BreakableWall extends BackgroundObject {
     public boolean collision(GameObject otherObject) {//������ӵ��Ļ���Ҫ������ʧ����
         if (location.intersects(otherObject.getLocation())) {
             if (otherObject instanceof TankBullet||otherObject instanceof AiTankBullet) {
-                sendMsg.sendMessage(tankWorld,"RemoveBreakableWall",0+"",this.getLocationPoint().x ,this.getLocationPoint().y, 0,0,0,0,0,0);
-            	this.show = false;
+                /*sendMsg.sendMessage(tankWorld,"RemoveBreakableWall",0+"",this.getLocationPoint().x ,this.getLocationPoint().y, 0,0,0,0,0,0);*/
+                OutRemoveBreakableWallMessage.RemoveBreakableWallMessage removeBreakableWallMessage = TankWorldHelper.getRemoveBreakableWallMessage(this.getLocationPoint().x, this.getLocationPoint().y);
+                MessagePusher.getInstance().pushMessageForUsers(tankWorld.getUsers(),removeBreakableWallMessage);
+                this.show = false;
             }
             return true;
         }
@@ -38,7 +43,9 @@ public class BreakableWall extends BackgroundObject {
             if (this.timer < 0) {
                 this.timer = 400;
                 this.show = true;
-              sendMsg.sendMessage(tankWorld,"BreakableWall", 0+"",this.getLocationPoint().x ,this.getLocationPoint().y ,0,0,0,0,0,0);
+              /*sendMsg.sendMessage(tankWorld,"BreakableWall", 0+"",this.getLocationPoint().x ,this.getLocationPoint().y ,0,0,0,0,0,0);*/
+                OutBreakableWallMessage.BreakableWallMessage breakableWallMessage = TankWorldHelper.getBreakableWallMessage(this.getLocationPoint().x, this.getLocationPoint().y);
+                MessagePusher.getInstance().pushMessageForUsers(tankWorld.getUsers(),breakableWallMessage);
             }
         }
     }

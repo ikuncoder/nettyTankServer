@@ -1,9 +1,6 @@
 package protobuf;
 
 import io.netty.channel.ChannelHandlerContext;
-import tank.TankWorld;
-
-import java.util.ArrayList;
 
 public class SendMsg {
     public static ChannelHandlerContext channelHandlerContext;
@@ -15,7 +12,7 @@ public class SendMsg {
     }
 
     //协议格式：sign+ PlayerId + X + Y+ direction+live+health+score+strength+respawnCounter
-    public void sendMessage(TankWorld tankWorld, String sign, String playerId, int... intArrays) {
+    /*public void sendMessage(TankWorld tankWorld, String sign, String playerId, int... intArrays) {
         ArrayList<ChannelHandlerContext> channelHandlerContextsArrayList=tankWorld.getChannelHandlerContextsArrayList();
         if (sign.equals("playerId")) {//这里分配playerid
             for (int i = 0; i < channelHandlerContextsArrayList.size(); i++) {
@@ -34,7 +31,7 @@ public class SendMsg {
                 channelHandlerContextsArrayList.get(i).flush();
             }
         }
-    }
+    }*/
 
     private ServerProtocolProto.ServerProtocol resp(String sign, String playerId, int... intArrays) {
         ServerProtocolProto.ServerProtocol.Builder builder = ServerProtocolProto.ServerProtocol.newBuilder();

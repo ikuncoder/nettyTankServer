@@ -1,0 +1,8 @@
+package protobuf.message.messageProto;
+option java_package = "protobuf.message.messageClass";
+option java_outer_classname = "OutBreakableWallMessage";
+
+message BreakableWallMessage{
+    required int32 bulletLocationX=1;
+    required int32 bulletLocationY=2;
+}

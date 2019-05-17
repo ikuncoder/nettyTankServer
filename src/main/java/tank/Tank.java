@@ -1,6 +1,10 @@
 package tank;
 
 import protobuf.SendMsg;
+import protobuf.message.MessagePusher;
+import protobuf.message.messageClass.OutBigExplosionMessage;
+import protobuf.message.messageClass.OutTankDisappearMessage;
+import protobuf.message.messageClass.OutUserTankMessage;
 import wingman.GameWorld;
 import wingman.game.BigExplosion;
 import wingman.game.PlayerShip;
@@ -87,15 +91,19 @@ public class Tank extends PlayerShip {
                         ((direction / 6) * this.getSizeX()) + this.getSizeX(), this.getSizeY(),  //source lower right
                         obs);
             	//传消息通知客户端刷新刚死亡的tank
-                sendMsg.sendMessage((TankWorld)obs,"respawnCounter" , this.getName() ,location.x ,location.y ,this.direction ,
-                        this.getLives() ,this.getHealth() ,this.getScore() ,this.getHealth(),this.respawnCounter);
+                /*sendMsg.sendMessage((TankWorld)obs,"respawnCounter" , this.getName() ,location.x ,location.y ,this.direction ,
+                        this.getLives() ,this.getHealth() ,this.getScore() ,this.getHealth(),this.respawnCounter);*/
+                OutUserTankMessage.UserTankMessage userTankMessage = TankWorldHelper.getUserTankMessage(this);
+                MessagePusher.getInstance().pushMessageForUsers(((TankWorld)obs).getUsers(),userTankMessage);
             }
             respawnCounter -= 1;
         } else {
         	//这里是>80而<160
         	 respawnCounter -= 1;
-        	 sendMsg.sendMessage((TankWorld)obs,"respawnCounter" ,this.getName() , location.x , location.y , this.direction,
-                     this.getLives() ,this.getHealth(),this.getScore(),this.getHealth(),this.respawnCounter);
+        	 /*sendMsg.sendMessage((TankWorld)obs,"respawnCounter" ,this.getName() , location.x , location.y , this.direction,
+                     this.getLives() ,this.getHealth(),this.getScore(),this.getHealth(),this.respawnCounter);*/
+            OutUserTankMessage.UserTankMessage userTankMessage = TankWorldHelper.getUserTankMessage(this);
+            MessagePusher.getInstance().pushMessageForUsers(((TankWorld)obs).getUsers(),userTankMessage);
         }
            
     }
@@ -103,12 +111,16 @@ public class Tank extends PlayerShip {
     public void die(TankWorld tankWorld) {
         this.show = false;
         //通知让死亡的tank消失
-        sendMsg.sendMessage(tankWorld,"tankDisappear" ,this.getName(),location.x ,location.y ,0,0,0,0,0,0);
+        /*sendMsg.sendMessage(tankWorld,"tankDisappear" ,this.getName(),location.x ,location.y ,0,0,0,0,0,0);*/
+        OutTankDisappearMessage.TankDisappearMessage tankDisappearMessage = TankWorldHelper.getTankDisappearMessage(this.getName(), location.x, location.y);
+        MessagePusher.getInstance().pushMessageForUsers(tankWorld.getUsers(),tankDisappearMessage);
         GameWorld.setSpeed(new Point(0, 0));
         BigExplosion explosion = new BigExplosion(new Point(location.x, location.y));
         tankWorld.addBackground(explosion);
         // 大爆炸显示指令
-     	sendMsg.sendMessage(tankWorld,"BigExplosion" , 0+"",location.x,location.y ,0,0,0,0,0,0);
+     	/*sendMsg.sendMessage(tankWorld,"BigExplosion" , 0+"",location.x,location.y ,0,0,0,0,0,0);*/
+        OutBigExplosionMessage.BigExplosionMessage bIgExplosionMessage = TankWorldHelper.getBIgExplosionMessage(location.x, location.y);
+        MessagePusher.getInstance().pushMessageForUsers(tankWorld.getUsers(),bIgExplosionMessage);
         lives -= 1;
         if (lives >= 0) {
             tankWorld.removeClockObserver(this.motion);

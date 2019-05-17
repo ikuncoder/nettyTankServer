@@ -1,7 +1,10 @@
 package wingman.game;
 
 import protobuf.SendMsg;
+import protobuf.message.MessagePusher;
+import protobuf.message.messageClass.OutRemovePowerUpMessage;
 import tank.TankWorld;
+import tank.TankWorldHelper;
 import wingman.WingmanWorld;
 import wingman.modifiers.AbstractGameModifier;
 import wingman.modifiers.motions.SimpleMotion;
@@ -49,8 +52,10 @@ public class PowerUp extends Ship {
     }
     public void die(TankWorld tankWorld){
         this.show = false;
-        sendMsg.sendMessage(tankWorld,"Removepowerup" ,0+"",this.getLocationPoint().x
-                ,this.getLocationPoint().y ,0,0,0,0,0,0);
+        /*sendMsg.sendMessage(tankWorld,"Removepowerup" ,0+"",this.getLocationPoint().x
+                ,this.getLocationPoint().y ,0,0,0,0,0,0);*/
+        OutRemovePowerUpMessage.RemovePowerUpMessage removePowerUpMessage = TankWorldHelper.getRemovePowerUpMessage(this.getLocationPoint().x, this.getLocationPoint().y);
+        MessagePusher.getInstance().pushMessageForUsers(tankWorld.getUsers(),removePowerUpMessage);
         weapon.deleteObserver(this);
         motion.deleteObserver(this);
         WingmanWorld.getInstance().removeClockObserver(motion);

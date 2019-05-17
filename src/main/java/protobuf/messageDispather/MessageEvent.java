@@ -55,7 +55,7 @@ public class MessageEvent {
             paras[1]=this.message;
             clazz.getMethod(method.getName(),paraTypes);
             method.invoke(clazz.newInstance(),paras);
-            logger.error("线程"+Thread.currentThread()+"执行事件");
+            logger.error("thread"+Thread.currentThread()+"do work");
         } catch (Exception e) {
            e.printStackTrace();
         }

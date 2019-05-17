@@ -1,8 +1,7 @@
 package protobuf.message.messageProto;
 option java_package = "protobuf.message.messageClass";
+option java_outer_classname = "OutTurnRightMessage";
 
-message LskTestMessage{
+message TurnRightMessage{
     required string name=1;
-    required int32 age=2;
-    required int32 high=3;
 }

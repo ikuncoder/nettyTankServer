@@ -59,8 +59,7 @@ public class MessageCenter {
 
 
     public static void main(String[] args){
-        MessageCenter messageCenter=MessageCenter.getInstance();
-        messageCenter.init();
-        System.out.println(11);
+        MessageCenter.getInstance().init();
+        System.out.println(1);
     }
 }

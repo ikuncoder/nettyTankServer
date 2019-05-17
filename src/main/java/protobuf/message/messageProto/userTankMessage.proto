@@ -1,0 +1,15 @@
+package protobuf.message.messageProto;
+option java_package = "protobuf.message.messageClass";
+option java_outer_classname = "OutUserTankMessage";
+
+message UserTankMessage{
+    required string tankName=1;
+    required int32 locationX=2;
+    required int32 locationY=3;
+    required int32 direction=4;
+    required int32 tankLives=5;
+    required int32 tankHealth=6;
+    required int32 tankScores=7;
+    required int32 tankStrength=8;
+    required int32 respawnCounter=9;
+}
