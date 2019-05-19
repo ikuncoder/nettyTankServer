@@ -109,7 +109,7 @@ public class TankWorld extends GameWorld implements Runnable{
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         GameWorld.sound.playmp3("Resources/AlliedForces.mp3");
         //ai线程
-        //new Thread(new AiTankHandler(tankWorld)).start();
+        new Thread(new AiTankHandler(tankWorld)).start();
         tankWorld.start();
         while(true){
             try{
@@ -211,7 +211,7 @@ public class TankWorld extends GameWorld implements Runnable{
                             /*sendMsg.sendMessage(tankWorld,"SmallExplosion", bullet.getBulletID() + "", bullet.getLocationPoint().x,
                                     bullet.getLocationPoint().y, 0, 0, 0, 0, 0, 0);
                             sendMsg.sendMessage(tankWorld,"#", bullet.getBulletID() + "", bullet.getLocationPoint().x
-                                    , bullet.getLocationPoint().y, 0, 0, 0, 0, 0, 0);*/
+                                     , bullet.getLocationPoint().y, 0, 0, 0, 0, 0, 0);*/
                             OutSmallExplosionMessage.SmallExplosionMessage smallExplosionMessage=TankWorldHelper.getSmallExplosionMessage(bullet.getBulletID(),bullet.getLocationPoint().x,bullet.getLocationPoint().y);
                             MessagePusher.getInstance().pushMessageForUsers(users,smallExplosionMessage);
                             OutRemoveBulletMessage.RemoveBulletMessage removeBulletMessage=TankWorldHelper.getRemoveBulletMessage(bullet.getBulletID(),bullet.getLocationPoint().x,bullet.getLocationPoint().y);
@@ -386,11 +386,13 @@ public class TankWorld extends GameWorld implements Runnable{
             g2.setFont(new Font("Calibri", Font.PLAIN, 24));
             if (!gameWon) {
                 g2.drawImage(sprites.get("gameover"), w / 3 - 50, h / 2, null);
-                //todo
                 /*sendMsg.sendMessage(tankWorld,"gameFinishedAndNotgameWon", 1 + "", 0, 0, 0, 0, 0, 0, 0, 0);*/
+                OutgameFinishedAndNotGameWonMessage.gameFinishedAndNotGameWonMessage gameFinishedAndNotGameWonMessage = TankWorldHelper.getgameFinishedAndNotGameWonMessage();
+                MessagePusher.getInstance().pushMessageForUsers(users,gameFinishedAndNotGameWonMessage);
             } else {
-                //todo
                 /*sendMsg.sendMessage(tankWorld,"gameFinishedAndGameWon", 1 + "", 0, 0, 0, 0, 0, 0, 0, 0);*/
+                OutgameFinishedAndGameWonMessage.gameFinishedAndGameWonMessage gameFinishedAndGameWonMessage = TankWorldHelper.getgameFinishedAndGameWonMessage();
+                MessagePusher.getInstance().pushMessageForUsers(users,gameFinishedAndGameWonMessage);
                 g2.drawImage(sprites.get("youwon"), sizeX / 3, 100, null);
             }
             g2.drawString("Score", sizeX / 3, 400);

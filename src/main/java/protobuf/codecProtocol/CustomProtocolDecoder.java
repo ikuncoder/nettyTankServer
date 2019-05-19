@@ -106,6 +106,10 @@ public class CustomProtocolDecoder extends ByteToMessageDecoder {
             return OutReleaseFiringMessage.ReleaseFiringMessage.getDefaultInstance().getParserForType().parseFrom(array,offset,length);
         }else if(messageId==MessageEnum.ResRandomMapMessage.getMessageId()){
             return OutResRandomMapMessage.ResRandomMapMessage.getDefaultInstance().getParserForType().parseFrom(array,offset,length);
+        }else if(messageId==MessageEnum.GameFinishedAndNotGameWonMessage.getMessageId()){
+            return OutgameFinishedAndNotGameWonMessage.gameFinishedAndNotGameWonMessage.getDefaultInstance().getParserForType().parseFrom(array,offset,length);
+        }else if(messageId==MessageEnum.GameFinishedAndGameWonMessage.getMessageId()){
+            return OutgameFinishedAndGameWonMessage.gameFinishedAndGameWonMessage.getDefaultInstance().getParserForType().parseFrom(array,offset,length);
         }
         return null;
     }

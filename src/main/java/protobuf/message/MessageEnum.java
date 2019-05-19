@@ -33,6 +33,8 @@ public enum MessageEnum {
     ReleaseDownMessage(27,""),
     ReleaseFiringMessage(28,""),
     ResRandomMapMessage(29,""),
+    GameFinishedAndGameWonMessage(30,""),
+    GameFinishedAndNotGameWonMessage(31,""),
     ;
 
 

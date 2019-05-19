@@ -61,8 +61,11 @@ public class NetWorkGameHandler {
                 Random random = new Random();
                 int mapNum = random.nextInt(3);
                 int groupId = groupNum + 1;
-                user.setGroupNum(groupId);
                 TankWorld tankWorld = new TankWorld(groupId, tempChannelHandlerContextsArrayList, mapNum);
+                ArrayList<User> users=tankWorld.getUsers();
+                for(User value:users){
+                    value.setGroupNum(groupId);
+                }
                 tankWorlds.add(tankWorld);
                 tankWorld.tankWorkStart(tankWorld);
             }

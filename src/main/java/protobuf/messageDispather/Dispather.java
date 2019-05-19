@@ -70,7 +70,7 @@ public class Dispather {
     }
 
     class EventThread extends Thread {
-        public BlockingQueue<MessageEvent> queue = new ArrayBlockingQueue(100);
+        public BlockingQueue<MessageEvent> queue = new ArrayBlockingQueue(1000);
         @Override
         public void run() {
             for (; ; ) {

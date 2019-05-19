@@ -171,4 +171,14 @@ public class TankWorldHelper {
         builder.setBulletId(bulletId);
         return builder.build();
     }
+
+    public static OutgameFinishedAndGameWonMessage.gameFinishedAndGameWonMessage getgameFinishedAndGameWonMessage(){
+        OutgameFinishedAndGameWonMessage.gameFinishedAndGameWonMessage.Builder builder=OutgameFinishedAndGameWonMessage.gameFinishedAndGameWonMessage.newBuilder();
+        return builder.build();
+    }
+
+    public static OutgameFinishedAndNotGameWonMessage.gameFinishedAndNotGameWonMessage getgameFinishedAndNotGameWonMessage(){
+        OutgameFinishedAndNotGameWonMessage.gameFinishedAndNotGameWonMessage.Builder builder=OutgameFinishedAndNotGameWonMessage.gameFinishedAndNotGameWonMessage.newBuilder();
+        return builder.build();
+    }
 }

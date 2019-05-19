@@ -34,7 +34,7 @@ public class CustomProtocolEncoder extends MessageToByteEncoder<MessageLite> {
         }else if(msg instanceof OutRemoveBulletMessage.RemoveBulletMessage){
             messageId = MessageEnum.RemoveBulletMessage.getMessageId();
         }else if(msg instanceof OutSmallExplosionMessage.SmallExplosionMessage){
-            messageId=MessageEnum.RemoveBulletMessage.getMessageId();
+            messageId=MessageEnum.SmallExplosionMessage.getMessageId();
         }else if(msg instanceof OutBulletInfoMessage.BulletInfoMessage){
             messageId=MessageEnum.BulletInfoMessage.getMessageId();
         }else if(msg instanceof OutUserTankMessage.UserTankMessage){
@@ -83,6 +83,10 @@ public class CustomProtocolEncoder extends MessageToByteEncoder<MessageLite> {
             messageId=MessageEnum.ReleaseFiringMessage.getMessageId();
         }else if(msg instanceof OutResRandomMapMessage.ResRandomMapMessage){
             messageId=MessageEnum.ResRandomMapMessage.getMessageId();
+        }else if(msg instanceof OutgameFinishedAndGameWonMessage.gameFinishedAndGameWonMessage){
+            messageId=MessageEnum.GameFinishedAndGameWonMessage.getMessageId();
+        }else if(msg instanceof OutgameFinishedAndNotGameWonMessage.gameFinishedAndNotGameWonMessage){
+            messageId=MessageEnum.GameFinishedAndNotGameWonMessage.getMessageId();
         }
         return messageId;
     }
