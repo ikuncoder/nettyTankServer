@@ -109,7 +109,7 @@ public class TankWorld extends GameWorld implements Runnable{
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         GameWorld.sound.playmp3("Resources/AlliedForces.mp3");
         //ai线程
-        new Thread(new AiTankHandler(tankWorld)).start();
+       /*new Thread(new AiTankHandler(tankWorld)).start();*/
         tankWorld.start();
         while(true){
             try{
@@ -123,8 +123,9 @@ public class TankWorld extends GameWorld implements Runnable{
                //服务器作标记
                 GameCenter.getInstance().flag=1;
                 //把mapNum,channelHandlerContextsArrayList传给GameLevel
-                GameLevelHandler.getInstance().gameLevelHandler(mapNum,channelHandlerContextsArrayList);
-                GameCenter.getInstance().tankWorldArrayList.remove(this);
+                GameLevelHandler.getInstance().gameLevelHandler(this,groupNum,mapNum,channelHandlerContextsArrayList);
+                /*GameCenter.getInstance().tankWorldArrayList.remove(this);*/
+
                 //new Thread(GameLevelHandler.getInstance(mapNum,channelHandlerContextsArrayList)).start();
                 /*Thread.currentThread().interrupt();
                 break;*/
@@ -297,7 +298,6 @@ public class TankWorld extends GameWorld implements Runnable{
                                 , player.getLocationPoint().y, 0, 0, 0, 0, 0, 0);*/
                         player.setWeapon(weapon);
                         powerup.die(tankWorld);
-                        player.setWeapon(weapon);
                     }
                 }
             }
@@ -428,7 +428,6 @@ public class TankWorld extends GameWorld implements Runnable{
                 break;
             }
         }
-
     }
 
 

@@ -4,9 +4,6 @@ import wingman.game.BackgroundObject;
 import wingman.game.Bullet;
 
 import javax.swing.*;
-
-import tank.TankWorld;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.net.URL;
@@ -65,7 +62,6 @@ public abstract class GameWorld extends JPanel implements Runnable, Observer {
 
 	
 	/*public ArrayList<Bullet> getBullet() {
-		// TODO Auto-generated method stub
 		return tankWorld.getBullet();
 	}*/
 }

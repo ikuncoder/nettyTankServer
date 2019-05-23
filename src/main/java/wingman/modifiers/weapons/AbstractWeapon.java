@@ -61,13 +61,17 @@ public abstract class AbstractWeapon extends AbstractGameModifier {
         SendMsg sendMsg=new SendMsg();
         if (bullets.length == 1) {
            /*sendMsg.sendMessage(tankWorld,"^",bullets[bullets.length - 1].getOwner().getName() ,bullets[bullets.length - 1].getLocationPoint().x,bullets[bullets.length - 1].getLocationPoint().y ,direction , bullets[bullets.length - 1].BulletID,0,0,0,0);*/
-            OutCreateBulletMessage.CreateBulletMessage createBulletMessage = TankWorldHelper.getCreateBulletMessage(bullets[bullets.length - 1].getOwner().getName(), bullets[bullets.length - 1].getLocationPoint().x, bullets[bullets.length - 1].getLocationPoint().y, direction, bullets[bullets.length - 1].BulletID);
+            OutCreateBulletMessage.CreateBulletMessage createBulletMessage = TankWorldHelper.getCreateBulletMessage(
+                    bullets[bullets.length - 1].getOwner().getName(), bullets[bullets.length - 1].getLocationPoint().x,
+                    bullets[bullets.length - 1].getLocationPoint().y, direction, bullets[bullets.length - 1].BulletID);
             MessagePusher.getInstance().pushMessageForUsers(tankWorld.getUsers(),createBulletMessage);
 
         } else if (bullets.length == 2) {
             for (int i = 2; i > 0; i--) {
                 /*sendMsg.sendMessage(tankWorld,"^",bullets[bullets.length - i].getOwner().getName() ,bullets[bullets.length - i].getLocationPoint().x,bullets[bullets.length - i].getLocationPoint().y ,direction ,bullets[bullets.length - i].BulletID,0,0,0,0);*/
-                OutCreateBulletMessage.CreateBulletMessage createBulletMessage = TankWorldHelper.getCreateBulletMessage(bullets[bullets.length - 1].getOwner().getName(), bullets[bullets.length - 1].getLocationPoint().x, bullets[bullets.length - 1].getLocationPoint().y, direction, bullets[bullets.length - 1].BulletID);
+                OutCreateBulletMessage.CreateBulletMessage createBulletMessage = TankWorldHelper.getCreateBulletMessage(
+                        bullets[bullets.length - i].getOwner().getName(), bullets[bullets.length - i].getLocationPoint().x,
+                        bullets[bullets.length - i].getLocationPoint().y, direction, bullets[bullets.length - i].BulletID);
                 MessagePusher.getInstance().pushMessageForUsers(tankWorld.getUsers(),createBulletMessage);
             }
         }

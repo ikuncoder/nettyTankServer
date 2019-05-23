@@ -1,11 +1,11 @@
 package com.kesar.a;
 
+import tank.TankLevel;
+import tank.TankWorld;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-
-import tank.TankLevel;
-import tank.TankWorld;
 
 public class KeSarStart{
 	public BufferedReader bufferedReader;
@@ -51,7 +51,6 @@ public class KeSarStart{
 				line = bufferedReader.readLine();
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		MapInfo info = new MapInfo(map, map[0].length, map.length, new Node(Aiplayer3X, Aiplayer3Y),

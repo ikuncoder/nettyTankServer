@@ -1,6 +1,7 @@
 package tank;
 
 import com.kesar.a.KeSarStart;
+import org.apache.log4j.Logger;
 import protobuf.SendMsg;
 import protobuf.message.MessagePusher;
 import protobuf.message.messageClass.OutAiTankMessage;
@@ -16,6 +17,7 @@ import java.awt.image.ImageObserver;
 import java.util.ArrayList;
 
 public class AiTank extends PlayerShip {
+	static Logger logger=Logger.getLogger(AiTank.class);
 	int direction;
 	SendMsg sendMsg=new SendMsg();
 	KeSarStart keSarStart;
@@ -63,131 +65,149 @@ public class AiTank extends PlayerShip {
 		}
 		int[][] map = keSarStart.GetMap(player1X / 32, player1Y / 32, this.getLocation().x / 32,
 				this.getLocation().y / 32, 8);
-		//将用户player位置由8变为0，防止AIplayer与用户palyer重叠在一起
 		//map[player1Y/32][player1X/32]=0;
 		int playerX = this.location.x / 32;
 		int playerY = this.location.y / 32;
+		//logger.error("juli:"+Math.sqrt(Math.pow(playerX-player1X / 32,2)+Math.pow(playerY-player1Y / 32,2)));
 		//keSarStart.printMap(map);//打印地图
-		if (map[playerY - 1][playerX] == 8) {//向上
-			this.direction = 90;
-			this.up = 1;
-			while ((this.getX() / 32 != playerX) || (this.getX() % 32 != 0) || (this.getY() / 32 != (playerY - 1))
-					|| (this.getY() % 32 != 0)) {
-				int dy = (int) (1 * (double) Math.cos(Math.toRadians(direction + 90)));
-				int dx = (int) (1 * (double) Math.sin(Math.toRadians(this.direction + 90)));
-				location.x += dx * (up - down);
-				location.y += dy * (up - down);
-			}
-			map[playerY][playerX] = 0;
-			this.up = 0;
-		} else if (map[playerY + 1][playerX] == 8) {//向下
-			this.direction = 270;
-			this.up = 1;
-			while ((this.getX() / 32 != playerX) || (this.getX() % 32 != 0) || (this.getY() / 32 != (playerY + 1))
-					|| (this.getY() % 32 != 0)) {
-				int dy = (int) (1 * (double) Math.cos(Math.toRadians(direction + 90)));
-				int dx = (int) (1 * (double) Math.sin(Math.toRadians(this.direction + 90)));
-				location.x += dx * (up - down);
-				location.y += dy * (up - down);
-			}
-			map[playerY][playerX] = 0;
-			this.up = 0;
-		} else if (map[playerY][playerX - 1] == 8) {//向左
-			this.direction = 180;
-			this.up = 1;
-			while ((this.getX() / 32) != (playerX - 1) || (this.getX() % 32 != 0)) {
-				int dy = (int) (1 * (double) Math.cos(Math.toRadians(direction + 90)));
-				int dx = (int) (1 * (double) Math.sin(Math.toRadians(this.direction + 90)));
-				location.x += dx * (up - down);
-				location.y += dy * (up - down);
-			}
-			map[playerY][playerX] = 0;
-			this.up = 0;
-		} else if (map[playerY][playerX + 1] == 8) {//向右
-			this.direction = 0;
-			this.up = 1;
-			while ((this.getX() / 32 != (playerX + 1)) || (this.getX() % 32 != 0) || (this.getY() / 32 != playerY)
-					|| (this.getY() % 32 != 0)) {
-				int dy = (int) (1 * (double) Math.cos(Math.toRadians(direction + 90)));
-				int dx = (int) (1 * (double) Math.sin(Math.toRadians(this.direction + 90)));
-				location.x += dx * (up - down);
-				location.y += dy * (up - down);
-			}
-			map[playerY][playerX] = 0;
-			this.up = 0;
-		} else if (map[playerY - 1][playerX - 1] == 8) {//左上
-			this.direction = 135;
-			this.up = 1;
-			while ((this.getX() / 32 != playerX - 1) || (this.getX() % 32 != 0)
-					|| (this.location.y / 32 != (playerY - 1)) || (this.getY() % 32 != 0)) {
-				int dy = ((int) (5 * (double) Math.cos(Math.toRadians(direction + 90)))) / 3;
-				// (int) (5 * (double) Math.sin(Math.toRadians(this.direction + 90)))=-3
-				int dx = ((int) (5 * (double) Math.sin(Math.toRadians(this.direction + 90)))) / 3;
-				location.x += dx * (up - down);
-				location.y += dy * (up - down);
-			}
-			map[playerY][playerX] = 0;
-			this.up = 0;
-		} else if (map[playerY + 1][playerX - 1] == 8) {//左下
-			this.direction = 225;
-			this.up = 1;
-			while ((this.getX() / 32 != (playerX - 1)) || (this.getX() % 32 != 0)
-					|| (this.getY() / 32 != (playerY + 1)) || (this.getY() % 32 != 0)) {
-				int dy = ((int) (5 * (double) Math.cos(Math.toRadians(direction + 90)))) / 3;
-				int dx = ((int) (5 * (double) Math.sin(Math.toRadians(this.direction + 90)))) / 3;
-				location.x += dx * (up - down);
-				location.y += dy * (up - down);
-			}
-			map[playerY][playerX] = 0;
-			this.up = 0;
-		} else if (map[playerY - 1][playerX + 1] == 8) {//右上
-			this.direction = 45;
-			this.up = 1;
-			while ((this.getX() / 32 != playerX + 1) || (this.getX() % 32 != 0)
-					|| (this.getY() / 32 != (playerY - 1)) || (this.getY() % 32 != 0)) {
-				int dy = ((int) (5 * (double) Math.cos(Math.toRadians(direction + 90)))) / 3;
-				int dx = (int) (5 * (double) Math.sin(Math.toRadians(this.direction + 90))) / 3;
-				location.x += dx * (up - down);
-				location.y += dy * (up - down);
-			}
-			map[playerY][playerX] = 0;
-			this.up = 0;
-		} else if (map[playerY + 1][playerX + 1] == 8) {//右下
-			this.direction = 315;
-			this.up = 1;
-			while ((this.getX() / 32 != (playerX + 1)) || (this.getX() % 32 != 0)
-					|| (this.getY() / 32 != (playerY + 1)) || (this.getY() % 32 != 0)) {
-				int dy = ((int) (5 * (double) Math.cos(Math.toRadians(direction + 90)))) / 3;
-				int dx = ((int) (5 * (double) Math.sin(Math.toRadians(this.direction + 90)))) / 3;
-				location.x += dx * (up - down);
-				location.y += dy * (up - down);
-			}
-			map[playerY][playerX] = 0;
-			this.up = 0;
-		} else {//这种情况一般不会发生
-			String[] strings = {"up", "up", "up", "up", "up", "up", "firing"};
-			for (int i = 0; i < strings.length; i++) {
-				if (strings[i].equals("turn")) {
-					right = 1;
-					this.turn(180 * (left - right));
-				} else if (strings[i].equals("up")) {
-					up = 1;
+		if(Math.sqrt(Math.pow(playerX-player1X / 32,2)+Math.pow(playerY-player1Y / 32,2))>2){
+			if (map[playerY - 1][playerX] == 8) {//向上
+				this.direction = 90;
+				this.up = 1;
+				while ((this.getX() / 32 != playerX) || (this.getX() % 32 != 0) || (this.getY() / 32 != (playerY - 1))
+						|| (this.getY() % 32 != 0)) {
 					int dy = (int) (1 * (double) Math.cos(Math.toRadians(direction + 90)));
 					int dx = (int) (1 * (double) Math.sin(Math.toRadians(this.direction + 90)));
 					location.x += dx * (up - down);
 					location.y += dy * (up - down);
-				} else if (strings[i].equals("firing")) {
-					isFiring = true;
-					if (isFiring) {
-						int frame = tankWorld.getFrameNumber();
-						if (frame >= lastFired + weapon.reload) {
-							fire(tankWorld);
-							lastFired = frame;
+				}
+				map[playerY][playerX] = 0;
+				this.up = 0;
+			} else if (map[playerY + 1][playerX] == 8) {//向下
+				this.direction = 270;
+				this.up = 1;
+				while ((this.getX() / 32 != playerX) || (this.getX() % 32 != 0) || (this.getY() / 32 != (playerY + 1))
+						|| (this.getY() % 32 != 0)) {
+					int dy = (int) (1 * (double) Math.cos(Math.toRadians(direction + 90)));
+					int dx = (int) (1 * (double) Math.sin(Math.toRadians(this.direction + 90)));
+					location.x += dx * (up - down);
+					location.y += dy * (up - down);
+				}
+				map[playerY][playerX] = 0;
+				this.up = 0;
+			} else if (map[playerY][playerX - 1] == 8) {//向左
+				this.direction = 180;
+				this.up = 1;
+				while ((this.getX() / 32) != (playerX - 1) || (this.getX() % 32 != 0)) {
+					int dy = (int) (1 * (double) Math.cos(Math.toRadians(direction + 90)));
+					int dx = (int) (1 * (double) Math.sin(Math.toRadians(this.direction + 90)));
+					location.x += dx * (up - down);
+					location.y += dy * (up - down);
+				}
+				map[playerY][playerX] = 0;
+				this.up = 0;
+			} else if (map[playerY][playerX + 1] == 8) {//向右
+				this.direction = 0;
+				this.up = 1;
+				while ((this.getX() / 32 != (playerX + 1)) || (this.getX() % 32 != 0) || (this.getY() / 32 != playerY)
+						|| (this.getY() % 32 != 0)) {
+					int dy = (int) (1 * (double) Math.cos(Math.toRadians(direction + 90)));
+					int dx = (int) (1 * (double) Math.sin(Math.toRadians(this.direction + 90)));
+					location.x += dx * (up - down);
+					location.y += dy * (up - down);
+				}
+				map[playerY][playerX] = 0;
+				this.up = 0;
+			} else if (map[playerY - 1][playerX - 1] == 8) {//左上
+				this.direction = 135;
+				this.up = 1;
+				while ((this.getX() / 32 != playerX - 1) || (this.getX() % 32 != 0)
+						|| (this.location.y / 32 != (playerY - 1)) || (this.getY() % 32 != 0)) {
+					int dy = ((int) (5 * (double) Math.cos(Math.toRadians(direction + 90)))) / 3;
+					// (int) (5 * (double) Math.sin(Math.toRadians(this.direction + 90)))=-3
+					int dx = ((int) (5 * (double) Math.sin(Math.toRadians(this.direction + 90)))) / 3;
+					location.x += dx * (up - down);
+					location.y += dy * (up - down);
+				}
+				map[playerY][playerX] = 0;
+				this.up = 0;
+			} else if (map[playerY + 1][playerX - 1] == 8) {//左下
+				this.direction = 225;
+				this.up = 1;
+				while ((this.getX() / 32 != (playerX - 1)) || (this.getX() % 32 != 0)
+						|| (this.getY() / 32 != (playerY + 1)) || (this.getY() % 32 != 0)) {
+					int dy = ((int) (5 * (double) Math.cos(Math.toRadians(direction + 90)))) / 3;
+					int dx = ((int) (5 * (double) Math.sin(Math.toRadians(this.direction + 90)))) / 3;
+					location.x += dx * (up - down);
+					location.y += dy * (up - down);
+				}
+				map[playerY][playerX] = 0;
+				this.up = 0;
+			} else if (map[playerY - 1][playerX + 1] == 8) {//右上
+				this.direction = 45;
+				this.up = 1;
+				while ((this.getX() / 32 != playerX + 1) || (this.getX() % 32 != 0)
+						|| (this.getY() / 32 != (playerY - 1)) || (this.getY() % 32 != 0)) {
+					int dy = ((int) (5 * (double) Math.cos(Math.toRadians(direction + 90)))) / 3;
+					int dx = (int) (5 * (double) Math.sin(Math.toRadians(this.direction + 90))) / 3;
+					location.x += dx * (up - down);
+					location.y += dy * (up - down);
+				}
+				map[playerY][playerX] = 0;
+				this.up = 0;
+			} else if (map[playerY + 1][playerX + 1] == 8) {//右下
+				this.direction = 315;
+				this.up = 1;
+				while ((this.getX() / 32 != (playerX + 1)) || (this.getX() % 32 != 0)
+						|| (this.getY() / 32 != (playerY + 1)) || (this.getY() % 32 != 0)) {
+					int dy = ((int) (5 * (double) Math.cos(Math.toRadians(direction + 90)))) / 3;
+					int dx = ((int) (5 * (double) Math.sin(Math.toRadians(this.direction + 90)))) / 3;
+					location.x += dx * (up - down);
+					location.y += dy * (up - down);
+				}
+				map[playerY][playerX] = 0;
+				this.up = 0;
+			} else {//这种情况一般不会发生
+				String[] strings = {"up", "up", "up", "up", "up", "up", "firing"};
+				for (int i = 0; i < strings.length; i++) {
+					if (strings[i].equals("turn")) {
+						right = 1;
+						this.turn(180 * (left - right));
+					} else if (strings[i].equals("up")) {
+						up = 1;
+						int dy = (int) (1 * (double) Math.cos(Math.toRadians(direction + 90)));
+						int dx = (int) (1 * (double) Math.sin(Math.toRadians(this.direction + 90)));
+						location.x += dx * (up - down);
+						location.y += dy * (up - down);
+					} else if (strings[i].equals("firing")) {
+						isFiring = true;
+						if (isFiring) {
+							int frame = tankWorld.getFrameNumber();
+							if (frame >= lastFired + weapon.reload) {
+								fire(tankWorld);
+								lastFired = frame;
+							}
 						}
 					}
 				}
 			}
 		}
+		double direction=0;
+		int triangleX=Math.abs(playerX-player1X/32);
+		double triangleXY=Math.sqrt(Math.pow(playerX-player1X / 32,2)+Math.pow(playerY-player1Y / 32,2));
+		double sin = Math.sin(triangleX / triangleXY);
+		if(playerX<=player1X/32&&playerY>=player1Y/32){
+			direction=(int)(90-sin*180/Math.PI) ;
+		}else if(playerX>player1X/32&&playerY>player1Y/32){
+			direction=(int)(90+sin*180/Math.PI);
+		}else if(playerX>=player1X/32&&playerY<=player1Y/32){
+			direction=(int)(270-sin*180/Math.PI);
+		}else if(playerX<player1X/32&&playerY<player1Y/32){
+			direction=(int)(270+sin*180/Math.PI);
+		}
+		logger.error("direction:"+direction);
+		logger.error("this.getDirection():"+this.getDirection());
+		this.direction=(int) direction;
 		this.isFiring = true;
 		if (this.isFiring) {
 			int frame = tankWorld.getFrameNumber();
