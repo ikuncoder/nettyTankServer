@@ -70,7 +70,7 @@ public class AiTank extends PlayerShip {
 		int playerY = this.location.y / 32;
 		//logger.error("juli:"+Math.sqrt(Math.pow(playerX-player1X / 32,2)+Math.pow(playerY-player1Y / 32,2)));
 		//keSarStart.printMap(map);//打印地图
-		if(Math.sqrt(Math.pow(playerX-player1X / 32,2)+Math.pow(playerY-player1Y / 32,2))>2){
+		if(Math.sqrt(Math.pow(playerX-player1X / 32,2)+Math.pow(playerY-player1Y / 32,2))>4){
 			if (map[playerY - 1][playerX] == 8) {//向上
 				this.direction = 90;
 				this.up = 1;

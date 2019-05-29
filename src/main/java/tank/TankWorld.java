@@ -109,7 +109,7 @@ public class TankWorld extends GameWorld implements Runnable{
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         GameWorld.sound.playmp3("Resources/AlliedForces.mp3");
         //ai线程
-       /*new Thread(new AiTankHandler(tankWorld)).start();*/
+        new Thread(new AiTankHandler(tankWorld)).start();
         tankWorld.start();
         while(true){
             try{
