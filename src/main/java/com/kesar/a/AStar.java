@@ -4,6 +4,12 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
+/**
+ * 
+ * ClassName: AStar 
+ * @Description: A星算法
+ * @author kesar
+ */
 public class AStar
 {
 	public final static int BAR = 1; // 障碍值
@@ -53,7 +59,7 @@ public class AStar
 	private void drawPath(int[][] maps, Node end,int path)
 	{
 		if(end==null||maps==null) return;
-		//System.out.println("总代价：" + end.G);
+		System.out.println("总代价：" + end.G);
 		while (end != null)
 		{
 			Coord c = end.coord;

@@ -1,5 +1,11 @@
 package com.kesar.a;
-
+/**
+ * 
+ * ClassName: Coord
+ * 
+ * @Description: 坐标
+ * @author kesar
+ */
 public class Coord
 {
 

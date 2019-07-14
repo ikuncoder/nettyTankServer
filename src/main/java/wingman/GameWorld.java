@@ -4,6 +4,9 @@ import wingman.game.BackgroundObject;
 import wingman.game.Bullet;
 
 import javax.swing.*;
+
+import tank.TankWorld;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.net.URL;
@@ -19,8 +22,10 @@ public abstract class GameWorld extends JPanel implements Runnable, Observer {
     private static Point speed = new Point(0, 0);
     protected BufferedImage bimg;
     protected volatile ArrayList<BackgroundObject> background;
-    //public TankWorld tankWorld=TankWorld.getInstance();
-
+    public TankWorld tankWorld=TankWorld.getInstance();
+    
+    
+    
     public static Point getSpeed() {
         return new Point(GameWorld.speed);
     }
@@ -50,7 +55,7 @@ public abstract class GameWorld extends JPanel implements Runnable, Observer {
 
     public Image getSprite(String name) {
         URL url = WingmanWorld.class.getResource(name);
-        Image img = java.awt.Toolkit.getDefaultToolkit().getImage(url);
+        Image img = Toolkit.getDefaultToolkit().getImage(url);
         try {
             MediaTracker tracker = new MediaTracker(this);
             tracker.addImage(img, 0);
@@ -62,6 +67,7 @@ public abstract class GameWorld extends JPanel implements Runnable, Observer {
 
 	
 	/*public ArrayList<Bullet> getBullet() {
+		// TODO Auto-generated method stub
 		return tankWorld.getBullet();
 	}*/
 }

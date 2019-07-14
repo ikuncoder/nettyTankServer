@@ -1,10 +1,5 @@
 package tank;
 
-import protobuf.SendMsg;
-import protobuf.message.MessagePusher;
-import protobuf.message.messageClass.OutBigExplosionMessage;
-import protobuf.message.messageClass.OutTankDisappearMessage;
-import protobuf.message.messageClass.OutUserTankMessage;
 import wingman.GameWorld;
 import wingman.game.BigExplosion;
 import wingman.game.PlayerShip;
@@ -13,17 +8,19 @@ import wingman.modifiers.motions.InputController;
 import java.awt.*;
 import java.awt.image.ImageObserver;
 
+import lskServer.SocketServer;
 
 public class Tank extends PlayerShip {
     int direction;
-    public SendMsg sendMsg=new SendMsg();
-    public Tank(Point location, Image img, int[] controls, String name,TankWorld tankWorld) {
+    public SocketServer socketServer=new SocketServer();
+    
+    public Tank(Point location, Image img, int[] controls, String name) {
         super(location, new Point(0, 0), img, controls, name);
         resetPoint = new Point(location);
         this.gunLocation = new Point(32, 32);
         this.name = name;
-        weapon = new TankWeapon(tankWorld);
-        motion = new InputController(this, controls,tankWorld);
+        weapon = new TankWeapon();
+        motion = new InputController(this, controls, TankWorld.getInstance());
         lives = 2;
         health = 100;
         strength = 100;
@@ -46,11 +43,11 @@ public class Tank extends PlayerShip {
     }
 
     //You need to fill in here
-    public void update(int w, int h,TankWorld tankWorld) {
+    public void update(int w, int h) {
         if (isFiring) {
-            int frame = tankWorld.getFrameNumber();
+            int frame = TankWorld.getInstance().getFrameNumber();
             if (frame >= lastFired + weapon.reload) {
-                fire(tankWorld);
+                fire();
                 lastFired = frame;
             }
         }
@@ -80,7 +77,7 @@ public class Tank extends PlayerShip {
                     ((direction / 6) * this.getSizeX()) + this.getSizeX(), this.getSizeY(),  //source lower right
                     obs);
         else if (respawnCounter == 80) {
-            ((TankWorld)obs).addClockObserver(this.motion);
+            TankWorld.getInstance().addClockObserver(this.motion);
             respawnCounter -= 1;
         } else if (respawnCounter < 80) {
             if (respawnCounter % 2 == 0) {
@@ -90,51 +87,53 @@ public class Tank extends PlayerShip {
                         (direction / 6) * this.getSizeX(), 0,  //source top left
                         ((direction / 6) * this.getSizeX()) + this.getSizeX(), this.getSizeY(),  //source lower right
                         obs);
+
             	//传消息通知客户端刷新刚死亡的tank
-                /*sendMsg.sendMessage((TankWorld)obs,"respawnCounter" , this.getName() ,location.x ,location.y ,this.direction ,
-                        this.getLives() ,this.getHealth() ,this.getScore() ,this.getHealth(),this.respawnCounter);*/
-                OutUserTankMessage.UserTankMessage userTankMessage = TankWorldHelper.getUserTankMessage(this);
-                MessagePusher.getInstance().pushMessageForUsers(((TankWorld)obs).getUsers(),userTankMessage);
+            	socketServer.sendHander("respawnCounter" + "+" + this.getName() + "+"
+         				+ location.x + "+" + location.y + "+" + this.direction + "+"
+         				+ this.getLives() + "+" + this.getHealth() + "+" + this.getScore() + "+" + this.getHealth()+"+"+this.respawnCounter);
             }
             respawnCounter -= 1;
         } else {
         	//这里是>80而<160
         	 respawnCounter -= 1;
-        	 /*sendMsg.sendMessage((TankWorld)obs,"respawnCounter" ,this.getName() , location.x , location.y , this.direction,
-                     this.getLives() ,this.getHealth(),this.getScore(),this.getHealth(),this.respawnCounter);*/
-            OutUserTankMessage.UserTankMessage userTankMessage = TankWorldHelper.getUserTankMessage(this);
-            MessagePusher.getInstance().pushMessageForUsers(((TankWorld)obs).getUsers(),userTankMessage);
+        	 
+        	 socketServer.sendHander("respawnCounter" + "+" + this.getName() + "+"
+      				+ location.x + "+" + location.y + "+" + this.direction + "+"
+      				+ this.getLives() + "+" + this.getHealth() + "+" + this.getScore() + "+" + this.getHealth()+"+"+this.respawnCounter);
         }
            
     }
 
-    public void die(TankWorld tankWorld) {
+    public void die() {
         this.show = false;
+        
         //通知让死亡的tank消失
-        /*sendMsg.sendMessage(tankWorld,"tankDisappear" ,this.getName(),location.x ,location.y ,0,0,0,0,0,0);*/
-        OutTankDisappearMessage.TankDisappearMessage tankDisappearMessage = TankWorldHelper.getTankDisappearMessage(this.getName(), location.x, location.y);
-        MessagePusher.getInstance().pushMessageForUsers(tankWorld.getUsers(),tankDisappearMessage);
+        socketServer.sendHander("tankDisappear" + "+" + this.getName()+ "+"
+ 				+ location.x + "+" + location.y + "+" + 0 + "+"
+ 				+ 0 + "+" + 0 + "+" + 0 + "+" + 0);
         GameWorld.setSpeed(new Point(0, 0));
         BigExplosion explosion = new BigExplosion(new Point(location.x, location.y));
-        tankWorld.addBackground(explosion);
+        TankWorld.getInstance().addBackground(explosion);
+        
         // 大爆炸显示指令
-     	/*sendMsg.sendMessage(tankWorld,"BigExplosion" , 0+"",location.x,location.y ,0,0,0,0,0,0);*/
-        OutBigExplosionMessage.BigExplosionMessage bIgExplosionMessage = TankWorldHelper.getBIgExplosionMessage(location.x, location.y);
-        MessagePusher.getInstance().pushMessageForUsers(tankWorld.getUsers(),bIgExplosionMessage);
+     	socketServer.sendHander("BigExplosion" + "+" + 0 + "+"
+     				+ location.x + "+" + location.y + "+" + 0 + "+"
+     				+ 0 + "+" + 0 + "+" + 0 + "+" + 0);
         lives -= 1;
         if (lives >= 0) {
-            tankWorld.removeClockObserver(this.motion);
-            reset(tankWorld);
+            TankWorld.getInstance().removeClockObserver(this.motion);
+            reset();
         } else {
             this.motion.delete(this);
         }
     }
 
-    public void reset(TankWorld tankWorld) {
+    public void reset() {
         this.setLocation(resetPoint);
         health = strength;
         respawnCounter = 160;
-        this.weapon = new TankWeapon(tankWorld);
+        this.weapon = new TankWeapon();
     }
 
 	public int getDirection() {
@@ -144,4 +143,6 @@ public class Tank extends PlayerShip {
 	public void setDirection(int direction) {
 		this.direction = direction;
 	}
+
+    
 }

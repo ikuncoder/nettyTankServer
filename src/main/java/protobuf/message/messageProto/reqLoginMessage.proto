@@ -1,8 +1,0 @@
-package protobuf.message.messageProto;
-option java_package = "protobuf.message.messageClass";
-option java_outer_classname = "OutReqLoginMessage";
-
-message LoginMessage{
-    required int64 userId=1;
-    required string password=2;
-}

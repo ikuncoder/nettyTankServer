@@ -1,9 +1,0 @@
-package protobuf.message.messageProto;
-option java_package = "protobuf.message.messageClass";
-option java_outer_classname = "OutRemoveBulletMessage";
-
-message RemoveBulletMessage{
-    required int32 bulletId=1;
-    required int32 bulletLocationX=2;
-    required int32 bulletLocationY=3;
-}

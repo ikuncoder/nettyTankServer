@@ -1,38 +1,29 @@
 package com.kesar.a;
 
-import tank.TankLevel;
-import tank.TankWorld;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+
+import tank.TankLevel;
+import tank.TankWorld;
 
 public class KeSarStart{
 	public BufferedReader bufferedReader;
 	public String line;
 	public int w;
 	public int h;
-	public TankWorld tankWorld;
-	TankLevel level;
-	int mapLength;
-	int mapHight;
-	public int[][] map;
-
-	public KeSarStart(TankWorld tankWorld){
-		this.tankWorld=tankWorld;
-		level= new TankLevel("Resources/level"+tankWorld.mapNum+".txt",tankWorld);
-		mapLength=level.w;
-		mapHight=level.h;
-		map=new int[mapHight][mapLength];
-	}
-
+	TankLevel level = new TankLevel("Resources/level"+TankWorld.getInstance().mapNum+".txt");
+	int mapLength = level.w;
+	int mapHight = level.h;
+	public int[][] map = new int[mapHight][mapLength];
+	
 	
 	public int[][] GetMap(int player1X, int player1Y,int Aiplayer3X,int Aiplayer3Y,int path) {
 		// 拿到地图的长和宽
 		// 读取地图
 		try {
 			bufferedReader = new BufferedReader(
-					new InputStreamReader(TankWorld.class.getResource("Resources/level"+tankWorld.mapNum+".txt").openStream()));
+					new InputStreamReader(TankWorld.class.getResource("Resources/level"+TankWorld.getInstance().mapNum+".txt").openStream()));
 			line = bufferedReader.readLine();
 			w = line.length();
 			h = 0;
@@ -49,8 +40,10 @@ public class KeSarStart{
 				}
 				h++;
 				line = bufferedReader.readLine();
+
 			}
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		MapInfo info = new MapInfo(map, map[0].length, map.length, new Node(Aiplayer3X, Aiplayer3Y),
@@ -60,7 +53,7 @@ public class KeSarStart{
 	}
 
 	/**
-	 * 打印地图
+	 * 鎵撳嵃鍦板浘
 	 */
 	public static void printMap(int[][] maps) {
 		for (int i = 0; i < maps.length; i++) {

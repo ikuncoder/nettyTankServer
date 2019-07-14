@@ -6,7 +6,6 @@
 
 package wingman.game;
 
-import tank.TankWorld;
 import wingman.modifiers.AbstractGameModifier;
 
 import java.awt.*;
@@ -65,17 +64,11 @@ abstract public class GameObject implements Observer {
     public void update(int w, int h) {
         location.x += speed.x;
         location.y += speed.y;
-        if (location.y < -100 || location.y == h + 100) {
-            this.show = false;
-        }
-    }
 
-    public void update(int w, int h, TankWorld tankWorld){
-        location.x += speed.x;
-        location.y += speed.y;
         if (location.y < -100 || location.y == h + 100) {
             this.show = false;
         }
+
     }
 
     @Override

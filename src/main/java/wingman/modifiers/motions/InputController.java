@@ -25,6 +25,7 @@ public class InputController extends MotionController implements KeyListener {
 
     public InputController(PlayerShip player, int[] keys) {
         this(player, keys, WingmanWorld.getInstance());
+
     }
 
     public InputController(PlayerShip player, int[] keys, Component world) {

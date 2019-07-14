@@ -5,13 +5,16 @@ import wingman.game.Ship;
 import wingman.modifiers.weapons.AbstractWeapon;
 
 import java.awt.*;
+import java.util.ArrayList;
+
+import lskServer.SocketServer;
 
 public class TankWeapon extends AbstractWeapon {
-    public TankWeapon(TankWorld tankWorld) {
-        super(tankWorld);
+    public TankWeapon() {
+        super(TankWorld.getInstance());
     }
 
-    public void fireWeapon(Ship theTank,TankWorld tankWorld){
+    public void fireWeapon(Ship theTank) {
         super.fireWeapon(theTank);
         Point location = theTank.getLocationPoint();
         Point offset = theTank.getGunLocation();
@@ -21,10 +24,14 @@ public class TankWeapon extends AbstractWeapon {
         int strength = 10;
         reload = 15;
 
-        TankBullet bullet = new TankBullet(location, speed, strength, (Tank) theTank,tankWorld);
+        TankBullet bullet = new TankBullet(location, speed, strength, (Tank) theTank);
         bullets = new Bullet[1];
         bullets[0] = bullet;
+        
+        
+        
         this.setChanged();
+
         this.notifyObservers();
     }
 }

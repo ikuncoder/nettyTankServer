@@ -1,10 +1,5 @@
 package wingman.game;
 
-import protobuf.SendMsg;
-import protobuf.message.MessagePusher;
-import protobuf.message.messageClass.OutRemovePowerUpMessage;
-import tank.TankWorld;
-import tank.TankWorldHelper;
 import wingman.WingmanWorld;
 import wingman.modifiers.AbstractGameModifier;
 import wingman.modifiers.motions.SimpleMotion;
@@ -15,8 +10,6 @@ import java.util.Observable;
 
 /* PowerUp extends ship so that it can hold a weapon to give to player*/
 public class PowerUp extends Ship {
-    public SendMsg sendMsg=new SendMsg();
-
     public PowerUp(Ship theShip) {
         super(theShip.getLocationPoint(), theShip.getSpeed(), 1, WingmanWorld.sprites.get("powerup"));
         this.motion = new SimpleMotion();
@@ -46,16 +39,10 @@ public class PowerUp extends Ship {
 
     public void die() {
         this.show = false;
-        weapon.deleteObserver(this);
-        motion.deleteObserver(this);
-        WingmanWorld.getInstance().removeClockObserver(motion);
-    }
-    public void die(TankWorld tankWorld){
-        this.show = false;
-        /*sendMsg.sendMessage(tankWorld,"Removepowerup" ,0+"",this.getLocationPoint().x
-                ,this.getLocationPoint().y ,0,0,0,0,0,0);*/
-        OutRemovePowerUpMessage.RemovePowerUpMessage removePowerUpMessage = TankWorldHelper.getRemovePowerUpMessage(this.getLocationPoint().x, this.getLocationPoint().y);
-        MessagePusher.getInstance().pushMessageForUsers(tankWorld.getUsers(),removePowerUpMessage);
+        
+        socketServer.sendHander("Removepowerup" + "+" + 0+ "+" + this.getLocationPoint().x
+				+ "+" + this.getLocationPoint().y + "+" + 0 + "+" + 0 + "+" + 0 + "+" + 0 + "+"
+				+ 0);
         weapon.deleteObserver(this);
         motion.deleteObserver(this);
         WingmanWorld.getInstance().removeClockObserver(motion);

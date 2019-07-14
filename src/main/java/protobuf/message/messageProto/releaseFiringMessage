@@ -1,7 +1,0 @@
-package protobuf.message.messageProto;
-option java_package = "protobuf.message.messageClass";
-option java_outer_classname = "OutReleaseFiringMessage";
-
-message ReleaseFiringMessage{
-    required string name=1;
-}

@@ -1,6 +1,0 @@
-package protobuf.message.messageProto;
-option java_package = "protobuf.message.messageClass";
-option java_outer_classname = "OutgameFinishedAndNotGameWonMessage";
-
-message gameFinishedAndNotGameWonMessage{
-}

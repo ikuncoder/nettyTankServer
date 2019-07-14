@@ -1,8 +1,0 @@
-package protobuf.message.messageProto;
-option java_package = "protobuf.message.messageClass";
-option java_outer_classname = "OutRemovePowerUpMessage";
-
-message RemovePowerUpMessage{
-    required int32 LocationX=1;
-    required int32 LocationY=2;
-}

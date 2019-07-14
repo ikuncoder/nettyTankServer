@@ -1,6 +1,5 @@
 package wingman.game;
 
-import tank.TankWorld;
 import wingman.GameSounds;
 import wingman.WingmanWorld;
 import wingman.modifiers.AbstractGameModifier;
@@ -12,6 +11,7 @@ import java.awt.image.ImageObserver;
 import java.util.Observable;
 import java.util.Observer;
 
+import lskServer.SocketServer;
 
 public class PlayerShip extends Ship implements Observer {
     public int respawnCounter;
@@ -53,15 +53,9 @@ public class PlayerShip extends Ship implements Observer {
             respawnCounter -= 1;
     }
 
-
     public void damage(int damageDone) {
         if (respawnCounter <= 0)
             super.damage(damageDone);
-    }
-
-    public void damage(int damageDone,TankWorld tankWorld){
-        if (respawnCounter <= 0)
-            super.damage(damageDone,tankWorld);
     }
 
     public void update(int w, int h) {
@@ -81,24 +75,6 @@ public class PlayerShip extends Ship implements Observer {
         }
     }
 
-    public void update(int w, int h, TankWorld tankWorld){
-        if (isFiring) {
-            int frame = WingmanWorld.getInstance().getFrameNumber();
-            if (frame >= lastFired + weapon.reload) {
-                fire();
-                lastFired = frame;
-            }
-        }
-
-        if ((location.x > 0 || right == 1) && (location.x < w - width || left == 1)) {
-            location.x += (right - left) * speed.x;
-        }
-        if ((location.y > 0 || down == 1) && (location.y < h - height || up == 1)) {
-            location.y += (down - up) * speed.x;
-        }
-    }
-
-
     public void startFiring() {
         isFiring = true;
     }
@@ -107,9 +83,9 @@ public class PlayerShip extends Ship implements Observer {
         isFiring = false;
     }
 
-    public void fire(TankWorld tankWorld) {
+    public void fire() {
         if (respawnCounter <= 0) {
-            weapon.fireWeapon(this,tankWorld);
+            weapon.fireWeapon(this);
             GameSounds.play("Resources/snd_explosion1.wav");
         }
     }
@@ -119,20 +95,6 @@ public class PlayerShip extends Ship implements Observer {
         BigExplosion explosion = new BigExplosion(new Point(location.x, location.y));
         WingmanWorld.getInstance().addBackground(explosion);
 		
-        lives -= 1;
-        if (lives >= 0) {
-            WingmanWorld.getInstance().removeClockObserver(this.motion);
-            reset();
-        } else {
-            this.motion.delete(this);
-        }
-    }
-
-    public void die(TankWorld tankWorld){
-        this.show = false;
-        BigExplosion explosion = new BigExplosion(new Point(location.x, location.y));
-        WingmanWorld.getInstance().addBackground(explosion);
-
         lives -= 1;
         if (lives >= 0) {
             WingmanWorld.getInstance().removeClockObserver(this.motion);

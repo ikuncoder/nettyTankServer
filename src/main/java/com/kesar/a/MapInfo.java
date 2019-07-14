@@ -1,6 +1,11 @@
 package com.kesar.a;
 
-
+/**
+ * 
+ * ClassName: MapInfo 
+ * @Description: 包含地图所需的所有输入数据
+ * @author kesar
+ */
 public class MapInfo
 {
 	public int[][] maps; // 二维数组的地图

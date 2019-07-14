@@ -1,5 +1,11 @@
 package com.kesar.a;
-
+/**
+ * 
+ * ClassName: Node 
+ * 
+ * @Description: 路径结点
+ * @author kesar
+ */
 public class Node implements Comparable<Node>
 {
 

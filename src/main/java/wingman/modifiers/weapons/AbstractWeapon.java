@@ -1,17 +1,16 @@
 package wingman.modifiers.weapons;
 
-import protobuf.SendMsg;
-import protobuf.message.MessagePusher;
-import protobuf.message.messageClass.OutCreateBulletMessage;
-import tank.TankWorld;
-import tank.TankWorldHelper;
 import wingman.GameWorld;
 import wingman.WingmanWorld;
 import wingman.game.Bullet;
 import wingman.game.PlayerShip;
 import wingman.game.Ship;
 import wingman.modifiers.AbstractGameModifier;
+
+import java.util.ArrayList;
 import java.util.Observer;
+
+import lskServer.SocketServer;
 
 /*Weapons are fired by motion controllers on behalf of players or ships
  * They observe motions and are observed by the Game World
@@ -22,7 +21,6 @@ public abstract class AbstractWeapon extends AbstractGameModifier {
     protected int direction;
     boolean friendly;
     int lastFired = 0, reloadTime;
-    TankWorld tankWorld;
 
     public AbstractWeapon() {
         this(WingmanWorld.getInstance());
@@ -41,51 +39,42 @@ public abstract class AbstractWeapon extends AbstractGameModifier {
         }
     }
 
-    public void fireWeapon(Ship theShip, TankWorld tankWorld){
-        if (theShip instanceof PlayerShip) {
-            direction = 1;
-        } else {
-            direction = -1;
-        }
-    }
-
     /* read is called by Observers when they are notified of a change */
     public void read(Object theObject) {
         GameWorld world = (GameWorld) theObject;
         world.addBullet(bullets);
-        this.tankWorld=(TankWorld)theObject;
+        
         //ArrayList<Bullet> bullets=world.getBullet();
-        //¹ã²¥Ò»´Î£¬Í¨Öª¿Í»§¶ËÔö¼ÓÒ»¿Å×Óµ¯
-
-
-        SendMsg sendMsg=new SendMsg();
-        if (bullets.length == 1) {
-           /*sendMsg.sendMessage(tankWorld,"^",bullets[bullets.length - 1].getOwner().getName() ,bullets[bullets.length - 1].getLocationPoint().x,bullets[bullets.length - 1].getLocationPoint().y ,direction , bullets[bullets.length - 1].BulletID,0,0,0,0);*/
-            OutCreateBulletMessage.CreateBulletMessage createBulletMessage = TankWorldHelper.getCreateBulletMessage(
-                    bullets[bullets.length - 1].getOwner().getName(), bullets[bullets.length - 1].getLocationPoint().x,
-                    bullets[bullets.length - 1].getLocationPoint().y, direction, bullets[bullets.length - 1].BulletID);
-            MessagePusher.getInstance().pushMessageForUsers(tankWorld.getUsers(),createBulletMessage);
-
-        } else if (bullets.length == 2) {
-            for (int i = 2; i > 0; i--) {
-                /*sendMsg.sendMessage(tankWorld,"^",bullets[bullets.length - i].getOwner().getName() ,bullets[bullets.length - i].getLocationPoint().x,bullets[bullets.length - i].getLocationPoint().y ,direction ,bullets[bullets.length - i].BulletID,0,0,0,0);*/
-                OutCreateBulletMessage.CreateBulletMessage createBulletMessage = TankWorldHelper.getCreateBulletMessage(
-                        bullets[bullets.length - i].getOwner().getName(), bullets[bullets.length - i].getLocationPoint().x,
-                        bullets[bullets.length - i].getLocationPoint().y, direction, bullets[bullets.length - i].BulletID);
-                MessagePusher.getInstance().pushMessageForUsers(tankWorld.getUsers(),createBulletMessage);
-            }
-        }
+		//ï¿½ã²¥Ò»ï¿½Î£ï¿½Í¨Öªï¿½Í»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Óµï¿½
+        
+        	SocketServer server=new SocketServer();
+        	if(bullets.length==1) {
+    			server.sendHander("^"+"+" + bullets[bullets.length-1].getOwner().getName()+"+"+ bullets[bullets.length-1].getLocationPoint().x + "+" + bullets[bullets.length-1].getLocationPoint().y+ "+" + direction+"+"+bullets[bullets.length-1].BulletID+"+"+0+"+"+0+"+"+0);
+        	}else if (bullets.length==2) {
+        		/*for(int i=0;i<2;i++) {
+        			server.sendHander("^"+"+" + bullets[bullets.length-1-i].getOwner().getName()+"+"+ bullets[bullets.length-1-i].getLocationPoint().x + "+" + bullets[bullets.length-1-i].getLocationPoint().y+ "+" + direction+"+"+bullets[bullets.length-1-i].BulletID+"+"+0+"+"+0+"+"+0);	
+        			System.out.println("ï¿½ï¿½ï¿½ï¿½ï¿½Óµï¿½"+bullets[bullets.length-1-i].BulletID+"ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½Í³É¹ï¿½");
+        		}*/
+        		for(int i=2;i>0;i--) {
+        			server.sendHander("^"+"+" + bullets[bullets.length-i].getOwner().getName()+"+"+ bullets[bullets.length-i].getLocationPoint().x + "+" + bullets[bullets.length-i].getLocationPoint().y+ "+" + direction+"+"+bullets[bullets.length-i].BulletID+"+"+0+"+"+0+"+"+0);
+        		}
+        	}
+		/*if(bullets.length!=0) {
+			SocketServer server=new SocketServer();
+			server.sendHander("^"+"+" + bullets[bullets.length-1].getOwner().getName()+"+"+ bullets[bullets.length-1].getLocationPoint().x + "+" + bullets[bullets.length-1].getLocationPoint().y+ "+" + direction+"+"+bullets[bullets.length-1].BulletID+"+"+0+"+"+0+"+"+0);
+			System.out.println("ï¿½ï¿½ï¿½ï¿½ï¿½Óµï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½Í³É¹ï¿½");
+		}*/
     }
 
     public void remove() {
         this.deleteObserver(WingmanWorld.getInstance());
     }
-
+    
     public Bullet[] getBullets() {
-        return bullets;
-    }
+		return bullets;
+	}
 
-    public void setBullets(Bullet[] bullets) {
-        this.bullets = bullets;
-    }
+	public void setBullets(Bullet[] bullets) {
+		this.bullets = bullets;
+	}
 }
